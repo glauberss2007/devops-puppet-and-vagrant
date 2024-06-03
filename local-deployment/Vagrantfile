@@ -1,0 +1,11 @@
+Vagrant.configure("2") do |config|
+  config.vm.provider "virtualbox" # Specify the default provider as VirtualBox
+  config.vm.define :web do |web_config| # Define a new virtual machine called 'web'
+    web_config.vm.box = "ubuntu/bionic64"# Use the Ubuntu 18.04 (bionic) box
+    web_config.vm.network "private_network", ip: "192.168.50.10" # Set up a private network with a static IP address
+    web_config.vm.provision "shell", path: "manifests/bootstrap.sh" # Provision the VM using a shell script
+    web_config.vm.provision "puppet" do |puppet| # Provision the VM using Puppet
+      puppet.manifest_file = "web.pp" # Specify the Puppet manifest file to use
+    end
+  end
+end
